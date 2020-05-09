@@ -4,7 +4,7 @@ header("Content-Type: application/json");
 
 // Collect what you need in the $data variable.
 
-$lines = file('/var/www/html/openWB/openwb.conf');
+$lines = file("/var/www/html/openWB/openwb.conf");
 $config = array();
 foreach ($lines as $line) {
 	$splitLine = array_map(trim, explode('=', $line));
@@ -14,6 +14,7 @@ foreach ($lines as $line) {
 
 // openwb.conf contains passwords, so we have to filter the values we send out
 $names = array(
+    // values.php -----------------------
     "lastmanagement",
     "lastmanagements2",
     "speichermodul", //speicherstat
@@ -30,7 +31,28 @@ $names = array(
     "hausverbrauchstat",
     "speicherpvui",
     "zielladenaktivlp1",
-    "heutegeladen"
+    "heutegeladen",
+    "displaytagesgraph",
+    "minimalstromstaerke",
+    "maximalstromstaerke",
+
+    // gaugevalues.php ------------------
+    "displayaktiv", //displayevumax
+    "displaypvmax",
+    "displayspeichermax",
+    "displayhausanzeigen",
+    "displayhausmax",
+    "displaylp1max",
+    "displaylp2max",
+    "displaypinaktiv",
+    "displaypincode",
+
+    // gauge.html in-line ---------------
+    "grapham",
+    "graphinteractiveam",
+    "verbraucher1_name",
+    "verbraucher2_name",
+    "verbraucher3_name"
 );
 
 foreach ($names as $name) {
@@ -38,7 +60,22 @@ foreach ($names as $name) {
 }
 
 // TODO: is this really static data?
-$data[lademodus] = $data[sofortlm] = file_get_contents('/var/www/html/openWB/ramdisk/lademodus');
+$ramdiskLocation = "/var/www/html/openWB/ramdisk";
+
+function loadRamdiskAndTrim($fileName) {
+    global $ramdiskLocation;
+    return trim(preg_replace('/\s+/', '', file_get_contents("$ramdiskLocation/$fileName")));
+}
+
+$data[lademodus] = $data[sofortlm] = file_get_contents("$ramdiskLocation/lademodus");
+$data[speichervorhanden] = file_get_contents("$ramdiskLocation/speichervorhanden");
+$data[soc1vorhanden] = loadRamdiskAndTrim("soc1vorhanden");
+$data[verbraucher1vorhanden] = loadRamdiskAndTrim("verbraucher1vorhanden");
+$data[verbraucher2vorhanden] = loadRamdiskAndTrim("verbraucher2vorhanden");
+$data[verbraucher3vorhanden] = loadRamdiskAndTrim("verbraucher3vorhanden");
+
+// TODO: REMOVE!!
+// $data[XXdebug] = $config;
 
 $json = json_encode($data);
 if ($json === false) {
