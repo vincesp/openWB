@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{136:function(n,o,t){"use strict";t.r(o),o.default={actions:{stop:"Stopp",standby:"Standby",chargeImmediate:"Sofort laden",minPlusPv:"Min + PV",onlyPv:"Nur PV"}}}}]);
