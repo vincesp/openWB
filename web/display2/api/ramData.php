@@ -1,5 +1,5 @@
 <?php
-include 'common.php';
+require 'common.php';
 
 $ramdiskLocation = "/var/www/html/openWB/ramdisk";
 

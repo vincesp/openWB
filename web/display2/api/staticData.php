@@ -1,5 +1,5 @@
 <?php
-include 'common.php';
+require 'common.php';
 
 $lines = file("/var/www/html/openWB/openwb.conf");
 foreach ($lines as $line) {
