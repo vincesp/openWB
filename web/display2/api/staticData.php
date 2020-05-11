@@ -9,11 +9,25 @@ foreach ($lines as $line) {
 }
 
 // openwb.conf contains passwords, so we have to filter the values we send out
-$names = array(
+$keys = array(
+    // values.php -----------------------
+    "speichermodul", //speicherstat
+    "lp1name",
+    "lp2name",
+    "lp3name",
+
+    // gaugevalues.php ------------------
+
+    // gauge.html in-line ---------------
+    "verbraucher1_name",
+    "verbraucher2_name",
+    "verbraucher3_name",
+);
+
+$keysNumber = array(
     // values.php -----------------------
     "lastmanagement",
     "lastmanagements2",
-    "speichermodul", //speicherstat
     "lademstat", //lademlp1stat
     "lademstats1", //lademlp2stat
     "lademstats2", //lademlp3stat
@@ -29,11 +43,13 @@ $names = array(
     "zielladenaktivlp1",
     "heutegeladen",
     "displaytagesgraph",
+    "displaytheme",
     "minimalstromstaerke",
     "maximalstromstaerke",
 
     // gaugevalues.php ------------------
-    "displayaktiv", //displayevumax
+    "displayaktiv", 
+    "displayevumax",
     "displaypvmax",
     "displayspeichermax",
     "displayhausanzeigen",
@@ -46,13 +62,13 @@ $names = array(
     // gauge.html in-line ---------------
     "grapham",
     "graphinteractiveam",
-    "verbraucher1_name",
-    "verbraucher2_name",
-    "verbraucher3_name"
 );
 
-foreach ($names as $name) {
-    $data[$name] = $config[$name];
+foreach ($keys as $key) {
+    $data[$key] = trim($config[$key], "'");
+}
+foreach ($keysNumber as $key) {
+    $data[$key] = floatval($config[$key]);
 }
 
 // TODO: REMOVE!!

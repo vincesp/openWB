@@ -3,18 +3,42 @@ require 'common.php';
 
 $ramdiskLocation = "/var/www/html/openWB/ramdisk";
 
-function loadRamdiskAndTrim($fileName) {
-    global $ramdiskLocation;
-    return trim(preg_replace('/\s+/', '', file_get_contents("$ramdiskLocation/$fileName")));
-}
+$keysRaw = array(
+);
 
-$data[lademodus] = $data[sofortlm] = file_get_contents("$ramdiskLocation/lademodus");
-$data[speichervorhanden] = file_get_contents("$ramdiskLocation/speichervorhanden");
-$data[soc1vorhanden] = loadRamdiskAndTrim("soc1vorhanden");
-$data[verbraucher1vorhanden] = loadRamdiskAndTrim("verbraucher1vorhanden");
-$data[verbraucher2vorhanden] = loadRamdiskAndTrim("verbraucher2vorhanden");
-$data[verbraucher3vorhanden] = loadRamdiskAndTrim("verbraucher3vorhanden");
+$keysTrim = array(
+    "verbraucher1_name",
+    "verbraucher2_name",
+    "verbraucher3_name",
+);
+
+$keysNumber = array(
+    "speichervorhanden",
+    "lademodus",
+    "soc1vorhanden",
+    "verbraucher1vorhanden",
+    "verbraucher2vorhanden",
+    "verbraucher3vorhanden",
+    "wattbezug",
+    "pvwatt",
+    "speicherleistung",
+    "speichersoc",
+    "hausverbrauch",
+    "llaktuell",
+    "llaktuells1",
+    "soc",
+    "soc1",
+);
+
+foreach ($keysRaw as $key) {
+    $data[$key] = file_get_contents("$ramdiskLocation/$key");
+};
+foreach ($keysTrim as $key) {
+    $data[$key] = trim(file_get_contents("$ramdiskLocation/$key"));
+};
+foreach ($keysNumber as $key) {
+    $data[$key] = floatval(file_get_contents("$ramdiskLocation/$key"));
+};
 
 sendAsJsonResponse($data);
-
 ?>
