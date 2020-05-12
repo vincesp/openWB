@@ -3,16 +3,15 @@ require 'common.php';
 
 $ramdiskLocation = "/var/www/html/openWB/ramdisk";
 
-$keysRaw = array(
-);
+$keysRaw = [];
 
-$keysTrim = array(
+$keysTrim = [
     "verbraucher1_name",
     "verbraucher2_name",
     "verbraucher3_name",
-);
+];
 
-$keysNumber = array(
+$keysNumber = [
     "speichervorhanden",
     "lademodus",
     "soc1vorhanden",
@@ -28,7 +27,9 @@ $keysNumber = array(
     "llaktuells1",
     "soc",
     "soc1",
-);
+    "lp1enabled",
+    "lp2enabled"
+];
 
 foreach ($keysRaw as $key) {
     $data[$key] = file_get_contents("$ramdiskLocation/$key");

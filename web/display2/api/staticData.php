@@ -9,7 +9,7 @@ foreach ($lines as $line) {
 }
 
 // openwb.conf contains passwords, so we have to filter the values we send out
-$keys = array(
+$keys = [
     // values.php -----------------------
     "speichermodul", //speicherstat
     "lp1name",
@@ -22,9 +22,9 @@ $keys = array(
     "verbraucher1_name",
     "verbraucher2_name",
     "verbraucher3_name",
-);
+];
 
-$keysNumber = array(
+$keysNumber = [
     // values.php -----------------------
     "lastmanagement",
     "lastmanagements2",
@@ -62,7 +62,7 @@ $keysNumber = array(
     // gauge.html in-line ---------------
     "grapham",
     "graphinteractiveam",
-);
+];
 
 foreach ($keys as $key) {
     $data[$key] = trim($config[$key], "'");
