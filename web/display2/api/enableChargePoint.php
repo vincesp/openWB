@@ -21,11 +21,11 @@ if (!isset($body->enabled)) {
   sendAsError("Parameter 'enabled' missing");
   return;
 }
-if ($body->enabled !== 1 && $body->enabled !== 0) {
+if (!is_bool($body->enabled)) {
   sendAsError("Wrong parameter value for 'enabled'");
   return;
 }
 
-file_put_contents("/var/www/html/openWB/ramdisk/{$body->chargePoint}enabled", $body->enabled);
+file_put_contents("/var/www/html/openWB/ramdisk/{$body->chargePoint}enabled", $body->enabled ? 1 : 0);
 sendAsJsonResponse(['result' => "ok"]);
 ?>
