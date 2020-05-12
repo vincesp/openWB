@@ -12,6 +12,10 @@ if (!isset($body->chargePoint)) {
   sendAsError("Parameter 'chargePoint' missing");
   return;
 }
+if (strlen($body->chargePoint) > 255) {
+  sendAsError("Wrong parameter value for 'chargePoint'");
+  return;
+}
 
 if (!isset($body->enabled)) {
   sendAsError("Parameter 'enabled' missing");
@@ -22,6 +26,6 @@ if ($body->enabled !== 1 && $body->enabled !== 0) {
   return;
 }
 
-file_put_contents("/var/www/html/openWB/ramdisk/{$body->chargePoint}", $body->enabled);
+file_put_contents("/var/www/html/openWB/ramdisk/{$body->chargePoint}enabled", $body->enabled);
 sendAsJsonResponse(['result' => "ok"]);
 ?>
