@@ -13,7 +13,7 @@ $keysTrim = [
 
 $keysNumber = [
     "speichervorhanden",
-    "lademodus",
+    //"lademodus",
     "soc1vorhanden",
     "verbraucher1vorhanden",
     "verbraucher2vorhanden",
@@ -27,8 +27,8 @@ $keysNumber = [
     "llaktuells1",
     "soc",
     "soc1",
-    "lp1enabled",
-    "lp2enabled"
+    //"lp1enabled",
+    //"lp2enabled",
 ];
 
 foreach ($keysRaw as $key) {
