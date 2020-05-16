@@ -237,7 +237,7 @@ var thevalues = [
 	["openWB/lp/8/ADirectModeAmps", "#"]
 ];
 var clientuid = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
-var client = new Messaging.Client(location.host, 9001, clientuid);
+var client = new Messaging.Client(window.location.hostname, 9001, clientuid);
 
 function getCol(matrix, col){
 	var column = [];
