@@ -38,10 +38,13 @@ function processMessages(mqttmsg, mqttpayload) {
         var suffix = topicSubGroup[1].charAt(0).toUpperCase() + topicSubGroup[1].slice(1);  // capitalize suffix
         var index = topicSubGroup[2];
         var elementId = topicIdentifier + suffix + index;
+
     } else {
         // no subgroup so everything after last '/' might be the id
         var elementId = topicIdentifier;
     }
+    // Could be a main on / off switch, check visibility func on main settings page
+    visibiltycheck(elementId, mqttpayload);
     var element = $('#' + elementId);
     if ( element.attr('type') == 'number' || element.attr('type') == 'text' || element.attr('type') == 'range' ) {
         originalValues[mqttmsg] = mqttpayload;
@@ -49,6 +52,9 @@ function processMessages(mqttmsg, mqttpayload) {
     } else if ( element.hasClass('btn-group-toggle') ) {
         originalValues[mqttmsg] = mqttpayload;
         setToggleBtnGroup(elementId, mqttpayload);
+
+
+
     } else {
         console.log(elementId + ' not found');
     }
