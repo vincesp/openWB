@@ -39,6 +39,18 @@
 
 			$lines = file('/var/www/html/openWB/openwb.conf');
 			foreach($lines as $line) {
+				if(strpos($line, "socuser=") !== false) {
+					list(, $socuserold) = explode("=", $line);
+				}
+				if(strpos($line, "socpass=") !== false) {
+					list(, $socpassold) = explode("=", $line);
+				}
+				if(strpos($line, "soc2user=") !== false) {
+					list(, $soc2userold) = explode("=", $line);
+				}
+				if(strpos($line, "soc2pass=") !== false) {
+					list(, $soc2passold) = explode("=", $line);
+				}
 				if(strpos($line, "soclp1_vin=") !== false) {
 					list(, $soclp1_vinold) = explode("=", $line);
 				}
@@ -48,8 +60,8 @@
 				if(strpos($line, "pv2id=") !== false) {
 					list(, $pv2idold) = explode("=", $line);
 				}
-				if(strpos($line, "pv1_ip=") !== false) {
-					list(, $pv1_ipold) = explode("=", $line);
+				if(strpos($line, "pv1_ipa=") !== false) {
+					list(, $pv1_ipaold) = explode("=", $line);
 				}
 				if(strpos($line, "speicher1_ip=") !== false) {
 					list(, $speicher1_ipold) = explode("=", $line);
@@ -80,8 +92,14 @@
 				if(strpos($line, "soc_bluelink_pin=") !== false) {
 					list(, $soc_bluelink_pinold) = explode("=", $line);
 				}
+				if(strpos($line, "soc_vin=") !== false) {
+					list(, $soc_vinold) = explode("=", $line);
+				}
 				if(strpos($line, "solarworld_emanagerip=") !== false) {
 					list(, $solarworld_emanageripold) = explode("=", $line);
+				}
+				if(strpos($line, "femskacopw=") !== false) {
+					list(, $femskacopwold) = explode("=", $line);
 				}
 				if(strpos($line, "femsip=") !== false) {
 					list(, $femsipold) = explode("=", $line);
@@ -97,6 +115,9 @@
 				}
 				if(strpos($line, "evukitversion=") !== false) {
 					list(, $evukitversionold) = explode("=", $line);
+				}
+				if(strpos($line, "speicherkitversion=") !== false) {
+					list(, $speicherkitversionold) = explode("=", $line);
 				}
 				if(strpos($line, "myrenault_userlp2=") !== false) {
 					list(, $myrenault_userlp2old) = explode("=", $line);
@@ -187,7 +208,30 @@
 				if(strpos($line, "mpmlp1ip=") !== false) {
 					list(, $mpmlp1ipold) = explode("=", $line);
 				}
-
+				if(strpos($line, "chargep1ip=") !== false) {
+				list(, $chargep1ipold) = explode("=", $line);
+				}
+				if(strpos($line, "chargep2ip=") !== false) {
+					list(, $chargep2ipold) = explode("=", $line);
+				}
+				if(strpos($line, "chargep3ip=") !== false) {
+					list(, $chargep3ipold) = explode("=", $line);
+				}
+				if(strpos($line, "chargep4ip=") !== false) {
+					list(, $chargep4ipold) = explode("=", $line);
+				}
+				if(strpos($line, "chargep5ip=") !== false) {
+					list(, $chargep5ipold) = explode("=", $line);
+				}
+				if(strpos($line, "chargep6ip=") !== false) {
+					list(, $chargep6ipold) = explode("=", $line);
+				}
+				if(strpos($line, "chargep7ip=") !== false) {
+					list(, $chargep7ipold) = explode("=", $line);
+				}
+				if(strpos($line, "chargep8ip=") !== false) {
+					list(, $chargep8ipold) = explode("=", $line);
+				}
 				if(strpos($line, "evseiplp4=") !== false) {
 					list(, $evseiplp4old) = explode("=", $line);
 				}
@@ -713,7 +757,6 @@
 				if(strpos($line, "mpm3pmlls2id=") !== false) {
 					list(, $mpm3pmlls2idold) = explode("=", $line);
 				}
-
 				if(strpos($line, "mpm3pmevuid=") !== false) {
 					list(, $mpm3pmevuidold) = explode("=", $line);
 				}
@@ -1111,6 +1154,9 @@
 				if(strpos($line, "kostalplenticorebatt=") !== false) {
 					list(, $kostalplenticorebattold) = explode("=", $line);
 				}
+				if(strpos($line, "froniuserzeugung=") !== false) {
+					list(, $froniuserzeugungold) = explode("=", $line);
+				}
 				if(strpos($line, "froniusprimo=") !== false) {
 					list(, $froniusprimoold) = explode("=", $line);
 				}
@@ -1187,6 +1233,8 @@
 			$lp8nameold = str_replace( "'", "", $lp8nameold);
 			$zoepasswortold = str_replace( "'", "", $zoepasswortold);
 			$zoelp2passwortold = str_replace( "'", "", $zoelp2passwortold);
+			$socpassold = str_replace( "'", "", $socpassold);
+			$soc2passold = str_replace( "'", "", $soc2passold);
 		?>
 
 		<div id="nav"></div> <!-- placeholder for navbar -->
@@ -1222,6 +1270,7 @@
 								<option <?php if($evseconold == "modbusevse\n" && $ladeleistungmodulold == "mpm3pmll\n" && $mpm3pmllsourceold == "/dev/serial0\n" && $mpm3pmllidold == "105\n") echo "selected" ?> value="openwb12v2mid">openWB series1/2 mit geeichtem Zähler v2</option>
 								<option <?php if($evseconold == "ipevse\n") echo "selected" ?> value="ipevse">openWB Satellit </option>
 								<option <?php if($evseconold == "httpevse\n") echo "selected" ?> value="httpevse">HTTP</option>
+								<option <?php if($evseconold == "extopenwb\n") echo "selected" ?> value="extopenwb">externe openWB</option>
 							</select>
 						</div>
 					</div>
@@ -1261,7 +1310,7 @@
 					<div id="evseconswifi">
 						<div class="row bg-info">
 							<div class="col">
-								<b><label for="evsewifiiplp1">Simple EVSE Wifi IP Adressee:</label></b>
+								<b><label for="evsewifiiplp1">Simple EVSE Wifi IP Adresse:</label></b>
 								<input type="text" name="evsewifiiplp1" id="evsewifiiplp1" value="<?php echo $evsewifiiplp1old ?>">
 							</div>
 						</div>
@@ -1280,6 +1329,19 @@
 							<div class="col">
 								Gültige Werte Zahl. Gibt die Zeit in Sekunden an wie lange auf Antwort der Simple EVSE gewartet wird. Bei gutem Wlan reichen 2 Sekunden aus.<br>
 								Zulange Wartezeit zieht einen Verzug der Regellogik von openWB mit sich wenn die SimpleEVSE z.B. gerade unterwegs genutzt wird.
+							</div>
+						</div>
+					</div>
+					<div id="evseconextopenwb">
+						<div class="row bg-info">
+							<div class="col">
+								<b><label for="lp1id">IP Adresse der externen openWB:</label></b>
+								<input type="text" name="chargep1ip" id="chargep1ip" value="<?php echo $chargep1ipold ?>">
+							</div>
+						</div>
+						<div class="row bg-info">
+							<div class="col">
+								Gültige Werte IP Adresse im Format: 192.168.0.12 . Die externe openWB muss die Option "openWB ist nur ein Ladepunkt" aktiv haben!
 							</div>
 						</div>
 					</div>
@@ -1426,9 +1488,13 @@
 							$('#evseconhttp').hide();
 							$('#evsecontwcmanager').hide();
 							$('#evseconipevse').hide();
+							$('#evseconextopenwb').hide();
 							if($('#evsecon').val() == 'ipevse') {
 								$('#evseconipevse').show();
 								$('#llmodullp1').show();
+							}
+							if($('#evsecon').val() == 'extopenwb') {
+								$('#evseconextopenwb').show();
 							}
 							if($('#evsecon').val() == 'dac') {
 								$('#evsecondac').show();
@@ -1498,6 +1564,7 @@
 								<option <?php if($ladeleistungmodulold == "httpll\n") echo "selected" ?> value="httpll">HTTP</option>
 								<option <?php if($ladeleistungmodulold == "mpm3pmtripple\n") echo "selected" ?> value="mpm3pmtripple">openWB Tripple</option>
 								<option <?php if($ladeleistungmodulold == "mpm3pmlllp1\n") echo "selected" ?> value="mpm3pmlllp1">openWB Satellit</option>
+								<option <?php if($ladeleistungmodulold == "mqttll\n") echo "selected" ?> value="mqttll">MQTT</option>
 							</select>
 						</div>
 						<div id="mpm3pmlllp1div">
@@ -1673,6 +1740,14 @@
 								Infos zum SMA Energy Meter <a href="https://github.com/snaptec/openWB#extras">HIER</a>
 
 							</div>
+						<div id="mqttll">
+							<div class="row">Keine Konfiguration erforderlich</div>
+							<div class="row">Per MQTT zu schreiben:</div>
+							<div class="row"><b>"openWB/set/lp/1/W"</b></div>
+							<div class="row">Ladeleistung in Watt, int, positiv</div>
+							<div class="row"><b>"openWB/set/lp/1/kWhCounter"</b></div>
+							<div class="row">Zählerstand in kWh, float, Punkt als Trenner, nur positiv</div>
+						</div>
 						</div>
 					</div>
 
@@ -1727,6 +1802,9 @@
 								$('#rs485lanlp1').show();
 								$('#llmfsm').show();
 							}
+							if($('#ladeleistungmodul').val() == 'mqttll') {
+								$('#mqttll').show();
+							}
 						}
 
 						$(function() {
@@ -1743,7 +1821,7 @@
 							<option <?php if($socmodulold == "none\n") echo "selected" ?> value="none">Nicht vorhanden</option>
 							<option <?php if($socmodulold == "soc_http\n") echo "selected" ?> value="soc_http">SoC HTTP</option>
 							<option <?php if($socmodulold == "soc_leaf\n") echo "selected" ?> value="soc_leaf">SoC Nissan Leaf</option>
-							<option <?php if($socmodulold == "soc_i3\n") echo "selected" ?> value="soc_i3">SoC BMW i3</option>
+							<option <?php if($socmodulold == "soc_i3\n") echo "selected" ?> value="soc_i3">SoC BMW & Mini</option>
 							<option <?php if($socmodulold == "soc_zoe\n") echo "selected" ?> value="soc_zoe">SoC Renault Zoe alt</option>
 							<option <?php if($socmodulold == "soc_myrenault\n") echo "selected" ?> value="soc_myrenault">SoC Renault Zoe MyRenault</option>
 							<option <?php if($socmodulold == "soc_evnotify\n") echo "selected" ?> value="soc_evnotify">SoC EVNotify</option>
@@ -1753,6 +1831,9 @@
 							<option <?php if($socmodulold == "soc_audi\n") echo "selected" ?> value="soc_audi">SoC Audi</option>
 							<option <?php if($socmodulold == "soc_mqtt\n") echo "selected" ?> value="soc_mqtt">MQTT</option>
 							<option <?php if($socmodulold == "soc_bluelink\n") echo "selected" ?> value="soc_bluelink">Hyundai Bluelink</option>
+							<option <?php if($socmodulold == "soc_kia\n") echo "selected" ?> value="soc_kia">Kia</option>
+							<option <?php if($socmodulold == "soc_volvo\n") echo "selected" ?> value="soc_volvo">Volvo</option>
+
 						</select>
 					</div>
 					<b><label for="stopsocnotpluggedlp1">SoC nur Abfragen wenn Auto angesteckt:</label></b>
@@ -1777,7 +1858,7 @@
 						<div class="row bg-info">
 						</div>
 						<div class="row bg-info">
-							<b><label for="teslasocuser">Tesla Benutzername:</label></b>
+							<b><label for="teslasocuser">Tesla E-Mail:</label></b>
 							<input type="text" name="teslasocuser" id="teslasocuser" value="<?php echo $socteslausernameold ?>">
 						</div>
 						<div class="row bg-info">
@@ -1788,7 +1869,9 @@
 							<input type="password" name="teslasocpw" id="teslasocpw" value="<?php echo $socteslapwold ?>">
 						</div>
 						<div class="row bg-info">
-							Password des Tesla Logins
+							Password des Tesla Logins. Das Passwort wird nur bei der ersten Einrichtung verwendet. Sobald die Anmeldung erfolgreich war, wird die Anmeldung über Token geregelt und das Passwort durch "#TokenInUse#" ersetzt.<br>
+							Wird bei Tesla direkt das Passwort geändert, kann die WB sich nicht mehr anmelden und es muss hier wieder einmalig das aktuelle Passwort eingetragen werden.<br>
+							Wenn das Eingabefeld geleert wird, dann werden auch die Anmeldetoken komplett entfernt.
 						</div>
 						<div class="row bg-info">
 							<b><label for="teslasoccarnumber">Auto im Account:</label></b>
@@ -1802,14 +1885,17 @@
 							<input type="text" name="teslasocintervall" id="teslasocintervall" value="<?php echo $socteslaintervallold ?>">
 						</div>
 						<div class="row bg-info">
-							Wie oft der Tesla abgefragt wird wenn nicht geladen wird. Angabe in Minuten.
+							Gibt an, in welchem Intervall (in Minuten bei normaler Regelgeschwindigkeit) der Ladestand des Autos abgefragt werden soll, wenn nicht geladen wird.<br>
+							Damit das Auto in den Standby gehen kann und die Energieverluste gering bleiben, sollte das Intervall mindestens eine Stunde ("60") betragen, besser 12 Stunden ("720") oder mehr.<br>
+							Zu Beginn einer Ladung wird das Auto immer geweckt, um den aktuellen SoC zu erhalten.
 						</div>
 						<div class="row bg-info">
 							<b><label for="teslasocintervallladen">Abfrageintervall Laden:</label></b>
 							<input type="text" name="teslasocintervallladen" id="teslasocintervallladen" value="<?php echo $socteslaintervallladenold ?>">
 						</div>
 						<div class="row bg-info">
-							Wie oft der Tesla abgefragt wird während geladen wird. Angabe in Minuten.
+							Gibt an, in welchem Intervall (in Minuten bei normaler Regelgeschwindigkeit) der Ladestand des Autos während des Ladens abgefragt werden soll.<br>
+							Je nach Ladeleistung werden 5 - 10 Minuten empfohlen, damit eventuell eingestellte SoC-Grenzen rechtzeitig erkannt werden können.
 						</div>
 					</div>
 					<div id="socmbluelink">
@@ -1820,7 +1906,7 @@
 							<input type="text" name="soc_bluelink_email" id="soc_bluelink_email" value="<?php echo $soc_bluelink_emailold ?>">
 						</div>
 						<div class="row bg-info">
-							Email Adresse des Hyundai Bluelink Logins
+							Email Adresse des Logins
 						</div>
 						<div class="row bg-info">
 							<b><label for="soc_bluelink_password">Passwort:</label></b>
@@ -1842,6 +1928,17 @@
 						</div>
 						<div class="row bg-info">
 							Wie oft abgefragt wird. Angabe in Minuten.
+						</div>
+					</div>
+					<div id="socmkia">
+						<div class="row bg-info">
+						</div>
+						<div class="row bg-info">
+							<b><label for="soc_vin">VIN:</label></b>
+							<input type="text" name="soc_vin" id="soc_vin" value="<?php echo $soc_vinold ?>">
+						</div>
+						<div class="row bg-info">
+							VIN des Autos.
 						</div>
 					</div>
 
@@ -1907,6 +2004,25 @@
 							Gültige Werte none, "url". URL für die Abfrage des Soc, Antwort muss der reine Zahlenwert sein.
 						</div>
 					</div>
+					<div id="socmuser">
+						<div class="row bg-info">
+							<b><label for="socuser">Benutzername:</label></b>
+							<input type="text" name="socuser" id="socuser" value="<?php echo $socuserold ?>">
+						</div>
+						<div class="row bg-info">
+							Benutzername
+						</div>
+					</div>
+					<div id="socmpass">
+						<div class="row bg-info">
+							<b><label for="socpass">Passwort:</label></b>
+							<input type="socpass" name="socpass" id="socpass" value="<?php echo $socpassold ?>">
+						</div>
+						<div class="row bg-info">
+							Passwort
+						</div>
+					</div>
+
 					<div id="soczoe">
 						<div class="row bg-info">
 							<b><label for="zoeusername">Benutzername:</label></b>
@@ -2028,7 +2144,7 @@
 							<input type="text" name="i3vin" id="i3vin" value="<?php echo $i3vinold ?>">
 						</div>
 						<div class="row bg-info">
-							BMW i3 VIN. Sie ist in voller Länge anzugeben.
+							BMW VIN. Sie ist in voller Länge anzugeben.
 						</div>
 						<div class="row bg-info">
 							<b><label for="soci3intervall">Verkürztes Intervall beim Laden:</label></b>
@@ -2077,12 +2193,25 @@
 							$('#socmaudi').hide();
 							$('#socmqtt').hide();
 							$('#socmbluelink').hide();
-
+							$('#socmkia').hide();
+							$('#socmuser').hide();
+							$('#socmpass').hide();
 							$('#socmyrenault').hide();
+
+							if($('#socmodul').val() == 'soc_volvo') {
+								$('#socmuser').show();
+								$('#socmpass').show();
+
+							}
+
 							if($('#socmodul').val() == 'soc_mqtt') {
 								$('#socmqtt').show();
 							}
 							if($('#socmodul').val() == 'soc_bluelink') {
+								$('#socmbluelink').show();
+							}
+							if($('#socmodul').val() == 'soc_kia') {
+								$('#socmkia').show();
 								$('#socmbluelink').show();
 							}
 
@@ -2163,7 +2292,21 @@
 								<option <?php if($evsecons1old == "keba\n") echo "selected" ?> value="keba">Keba</option>
 								<option <?php if($evsecons1old == "modbusevse\n" && $ladeleistungs1modulold == "mpm3pmlls1\n" && $mpm3pmlls1sourceold == "/dev/ttyUSB1\n" && $mpm3pmlls1idold == "6\n") echo "selected" ?> value="openwb12s1">openWB series1/2 Duo</option>
 								<option <?php if($evsecons1old == "ipevse\n") echo "selected" ?> value="ipevse">openWB Satellit</option>
+								<option <?php if($evsecons1old == "extopenwb\n") echo "selected" ?> value="extopenwb">externe openWB</option>
 							</select>
+						</div>
+						<div id="evseconextopenwblp2">
+							<div class="row bg-info">
+								<div class="col">
+									<b><label for="lp2id">IP Adresse der externen openWB:</label></b>
+									<input type="text" name="chargep2ip" id="chargep2ip" value="<?php echo $chargep2ipold ?>">
+								</div>
+							</div>
+							<div class="row bg-info">
+								<div class="col">
+									Gültige Werte IP Adresse im Format: 192.168.0.12 . Die externe openWB muss die Option "openWB ist nur ein Ladepunkt" aktiv haben!
+								</div>
+							</div>
 						</div>
 						<div id="evseconipevselp2">
 							<div class="row bg-info">
@@ -2272,7 +2415,7 @@
 						</div>
 						<div id="evseconswifis1">
 							<div class="row bg-info">
-								<b><label for="evsewifiiplp2">Simple EVSE Wifi IP Adressee:</label></b>
+								<b><label for="evsewifiiplp2">Simple EVSE Wifi IP Adresse:</label></b>
 								<input type="text" name="evsewifiiplp2" id="evsewifiiplp2" value="<?php echo $evsewifiiplp2old ?>">
 							</div>
 							<div class="row bg-info">
@@ -2289,7 +2432,7 @@
 						</div>
 						<div id="evsecongoes1">
 							<div class="row bg-info">
-								<b><label for="goeiplp2">Go-e IP Adressee:</label></b>
+								<b><label for="goeiplp2">Go-e IP Adresse:</label></b>
 								<input type="text" name="goeiplp2" id="goeiplp2" value="<?php echo $goeiplp2old ?>">
 							</div>
 							<div class="row bg-info">
@@ -2316,6 +2459,7 @@
 								$('#evseconkebas1').hide();
 								$('#evseconnrgkicks1').hide();
 								$('#openwb12s1').hide();
+								$('#evseconextopenwblp2').hide();
 								$('#evseconipevselp2').hide();
 								if($('#evsecons1').val() == 'ipevse') {
 									$('#evseconipevselp2').show();
@@ -2331,6 +2475,9 @@
 								}
 								if($('#evsecons1').val() == 'simpleevsewifi') {
 									$('#evseconswifis1').show();
+								}
+								if($('#evsecons1').val() == 'extopenwb') {
+									$('#evseconextopenwblp2').show();
 								}
 								if($('#evsecons1').val() == 'goe') {
 									$('#evsecongoes1').show();
@@ -2485,8 +2632,27 @@
 								<option <?php if($socmodul1old == "soc_carnetlp2\n") echo "selected" ?> value="soc_carnetlp2">SoC VW Carnet</option>
 								<option <?php if($socmodul1old == "soc_zeronglp2\n") echo "selected" ?> value="soc_zeronglp2">SoC Zero NG</option>
 								<option <?php if($socmodul1old == "soc_mqtt\n") echo "selected" ?> value="soc_mqtt">MQTT</option>
+								<option <?php if($socmodul1old == "soc_audilp2\n") echo "selected" ?> value="soc_audilp2">Audi</option>
 
 							</select>
+						</div>
+						<div id="socmuser2">
+							<div class="row bg-info">
+								<b><label for="soc2user">Benutzername:</label></b>
+								<input type="text" name="soc2user" id="soc2user" value="<?php echo $soc2userold ?>">
+							</div>
+							<div class="row bg-info">
+								Benutzername
+							</div>
+						</div>
+						<div id="socmpass2">
+							<div class="row bg-info">
+								<b><label for="soc2pass">Passwort:</label></b>
+								<input type="soc2pass" name="soc2pass" id="soc2pass" value="<?php echo $soc2passold ?>">
+							</div>
+							<div class="row bg-info">
+								Passwort
+							</div>
 						</div>
 						<div id="socmqtt1">
 							<div class="row">Keine Konfiguration erforderlich</div>
@@ -2532,7 +2698,7 @@
 							<div class="row bg-info">
 							</div>
 							<div class="row bg-info">
-								<b><label for="teslasoclp2user">Tesla Benutzername:</label></b>
+								<b><label for="teslasoclp2user">Tesla E-Mail:</label></b>
 								<input type="text" name="teslasoclp2user" id="teslasoclp2user" value="<?php echo $socteslalp2usernameold ?>">
 							</div>
 							<div class="row bg-info">
@@ -2543,7 +2709,9 @@
 								<input type="password" name="teslasoclp2pw" id="teslasoclp2pw" value="<?php echo $socteslalp2pwold ?>">
 							</div>
 							<div class="row bg-info">
-								Password des Tesla Logins
+								Password des Tesla Logins. Das Passwort wird nur bei der ersten Einrichtung verwendet. Sobald die Anmeldung erfolgreich war, wird die Anmeldung über Token geregelt und das Passwort durch "#TokenInUse#" ersetzt.<br>
+								Wird bei Tesla direkt das Passwort geändert, kann die WB sich nicht mehr anmelden und es muss hier wieder einmalig das aktuelle Passwort eingetragen werden.<br>
+								Wenn das Eingabefeld geleert wird, dann werden auch die Anmeldetoken komplett entfernt.
 							</div>
 							<div class="row bg-info">
 								<b><label for="teslasoclp2carnumber">Auto im Account:</label></b>
@@ -2557,14 +2725,17 @@
 								<input type="text" name="teslasoclp2intervall" id="teslasoclp2intervall" value="<?php echo $socteslalp2intervallold ?>">
 							</div>
 							<div class="row bg-info">
-								Wie oft der Tesla abgefragt wird wenn nicht geladen wird. Angabe in Minuten.
+								Gibt an, in welchem Intervall (in Minuten bei normaler Regelgeschwindigkeit) der Ladestand des Autos abgefragt werden soll, wenn nicht geladen wird.<br>
+								Damit das Auto in den Standby gehen kann und die Energieverluste gering bleiben, sollte das Intervall mindestens eine Stunde ("60") betragen, besser 12 Stunden ("720") oder mehr.<br>
+								Zu Beginn einer Ladung wird das Auto immer geweckt, um den aktuellen SoC zu erhalten.
 							</div>
 							<div class="row bg-info">
 								<b><label for="teslasoclp2intervallladen">Abfrageintervall Laden:</label></b>
 								<input type="text" name="teslasoclp2intervallladen" id="teslasoclp2intervallladen" value="<?php echo $socteslalp2intervallladenold ?>">
 							</div>
 							<div class="row bg-info">
-								Wie oft der Tesla abgefragt wird während geladen wird. Angabe in Minuten.
+								Gibt an, in welchem Intervall (in Minuten bei normaler Regelgeschwindigkeit) der Ladestand des Autos während des Ladens abgefragt werden soll.<br>
+								Je nach Ladeleistung werden 5 - 10 Minuten empfohlen, damit eventuell eingestellte SoC-Grenzen rechtzeitig erkannt werden können.
 							</div>
 						</div>
 						<div id="soccarnetlp2">
@@ -2769,6 +2940,9 @@
 
 							function display_socmodul1() {
 								$('#socmqtt1').hide();
+								$('#socmuser2').hide();
+								$('#socmpass2').hide();
+
 								$('#socmnone1').hide();
 								$('#socmhttp1').hide();
 								$('#socleaf1').hide();
@@ -2789,6 +2963,12 @@
 								if($('#socmodul1').val() == 'soc_http1') {
 									$('#socmhttp1').show();
 								}
+								if($('#socmodul1').val() == 'soc_audilp2') {
+									$('#socmuser2').show();
+									$('#socmpass2').show();
+
+								}
+
 								if($('#socmodul1').val() == 'soc_leafs1') {
 									$('#socleaf1').show();
 								}
@@ -2880,7 +3060,21 @@
 								<option <?php if($evsecons2old == "simpleevsewifi\n") echo "selected" ?> value="simpleevsewifi">SimpleEVSEWifi</option>
 								<option <?php if($evsecons2old == "goe\n") echo "selected" ?> value="goe">Go-e</option>
 								<option <?php if($evsecons2old == "ipevse\n") echo "selected" ?> value="ipevse">openWB Satellit</option>
+								<option <?php if($evsecons2old == "extopenwb\n") echo "selected" ?> value="extopenwb">externe openWB</option>
 							</select>
+						</div>
+						<div id="evseconextopenwblp3">
+							<div class="row bg-info">
+								<div class="col">
+									<b><label for="chargep3ip">IP Adresse der externen openWB:</label></b>
+									<input type="text" name="chargep3ip" id="chargep3ip" value="<?php echo $chargep3ipold ?>">
+								</div>
+							</div>
+							<div class="row bg-info">
+								<div class="col">
+									Gültige Werte IP Adresse im Format: 192.168.0.12 . Die externe openWB muss die Option "openWB ist nur ein Ladepunkt" aktiv haben!
+								</div>
+							</div>
 						</div>
 						<div id="evseconipevselp3">
 							<div class="row bg-info">
@@ -2937,7 +3131,7 @@
 							</div>
 							<div id="evseconswifis2">
 								<div class="row bg-info">
-									<b><label for="evsewifiiplp3">Simple EVSE Wifi IP Adressee:</label></b>
+									<b><label for="evsewifiiplp3">Simple EVSE Wifi IP Adresse:</label></b>
 									<input type="text" name="evsewifiiplp3" id="evsewifiiplp3" value="<?php echo $evsewifiiplp3old ?>">
 								</div>
 								<div class="row bg-info">
@@ -2954,7 +3148,7 @@
 							</div>
 						<div id="evsecongoes2">
 							<div class="row bg-info">
-								<b><label for="goeiplp3">Go-e IP Adressee:</label></b>
+								<b><label for="goeiplp3">Go-e IP Adresse:</label></b>
 								<input type="text" name="goeiplp3" id="goeiplp3" value="<?php echo $goeiplp3old ?>">
 							</div>
 							<div class="row bg-info">
@@ -2978,7 +3172,7 @@
 								$('#llmodullp3').hide();
 								$('#evsecongoes2').hide();
 								$('#evseconipevselp3').hide();
-
+								$('#evseconextopenwblp3').hide();
 
 								if($('#evsecons2').val() == 'dac') {
 									$('#evsecondacs2').show();
@@ -2990,6 +3184,9 @@
 								}
 								if($('#evsecons2').val() == 'simpleevsewifi') {
 									$('#evseconswifis2').show();
+								}
+								if($('#evsecons2').val() == 'extopenwb') {
+									$('#evseconextopenwblp3').show();
 								}
 								if($('#evsecons2').val() == 'goe') {
 									$('#evsecongoes2').show();
@@ -3199,7 +3396,7 @@
 					</div>
 					<div id="lastlp4mman" style="margin:5em;">
 						<div class="row">
-							<b><label for="lp3name">Name Ladepunkt 4:</label></b>
+							<b><label for="lp4name">Name Ladepunkt 4:</label></b>
 							<input type="text" name="lp4name" id="lp4name" value="<?php echo $lp4nameold ?>">
 						</div>
 						<div class="row bg-info">
@@ -3534,7 +3731,7 @@
 							<option <?php if($wattbezugmodulold == "bezug_solaredge\n") echo "selected" ?> value="bezug_solaredge">Solaredge</option>
 							<option <?php if($wattbezugmodulold == "bezug_smartme\n") echo "selected" ?> value="bezug_smartme">Smartme</option>
 							<option <?php if($wattbezugmodulold == "bezug_e3dc\n") echo "selected" ?> value="bezug_e3dc">E3DC Speicher</option>
-							<option <?php if($wattbezugmodulold == "bezug_sbs25\n") echo "selected" ?> value="bezug_sbs25">SMA SBS2.5 Speicher</option>
+							<option <?php if($wattbezugmodulold == "bezug_sbs25\n") echo "selected" ?> value="bezug_sbs25">SMA Sunny Boy Storage </option>
 							<option <?php if($wattbezugmodulold == "bezug_kostalplenticoreem300haus\n") echo "selected" ?> value="bezug_kostalplenticoreem300haus">Kostal Plenticore mit EM300/KSEM</option>
 							<option <?php if($wattbezugmodulold == "bezug_kostalpiko\n") echo "selected" ?> value="bezug_kostalpiko">Kostal Piko mit Energy Meter</option>
 							<option <?php if($wattbezugmodulold == "bezug_ksem\n") echo selected ?> value="bezug_ksem">Kostal Smart Energy Meter oder TQ EM410</option>
@@ -3547,7 +3744,7 @@
 							<option <?php if($wattbezugmodulold == "bezug_lgessv1\n") echo "selected" ?> value="bezug_lgessv1">LG ESS 1.0VI</option>
 							<option <?php if($wattbezugmodulold == "bezug_mqtt\n") echo "selected" ?> value="bezug_mqtt">MQTT</option>
 							<option <?php if($wattbezugmodulold == "bezug_sonneneco\n") echo "selected" ?> value="bezug_sonneneco">Sonnen eco</option>
-							<option <?php if($wattbezugmodulold == "bezug_fems\n") echo "selected" ?> value="bezug_fems">Fenecon FEMS</option>
+							<option <?php if($wattbezugmodulold == "bezug_fems\n") echo "selected" ?> value="bezug_fems">openEMS / Fenecon FEMS / Kaco Hy-Control</option>
 							<option <?php if($wattbezugmodulold == "bezug_solarworld\n") echo "selected" ?> value="bezug_solarworld">Solarworld</option>
 							<option <?php if($wattbezugmodulold == "bezug_siemens\n") echo "selected" ?> value="bezug_siemens">Siemens Speicher</option>
 						</select>
@@ -3634,6 +3831,13 @@
 						</div>
 						<div class="row" style="background-color:#febebe">
 							Gültige Werte IP. IP Adresse des Fenecon FEMS.
+						</div>
+						<div class="row" style="background-color:#febebe">
+							<b><label for="femskacopw">Passwort:</label></b>
+							<input type="text" name="femskacopw" id="femskacopw" value="<?php echo $femskacopwold ?>">
+						</div>
+						<div class="row" style="background-color:#febebe">
+							Bei Nutzung von Fenecon FEMS ist das Passwort im Normalfall user, bei Kaco mit Hy-Control ist das Passwort meist admin.
 						</div>
 					</div>
 					<div id="wattbezugsolarworld">
@@ -3880,12 +4084,14 @@
 						</div>
 					</div>
 					<div id="wattbezugfronius">
-						<div class="row" style="background-color:#febebe">
-							Die IP des Wechselrichters wird im dazugehörigen Fronius PV-Modul eingestellt.
+						<div class="row" style="background-color:#febebe"> Die IP des Wechselrichters wird im dazugehörigen Fronius PV-Modul eingestellt.
 						</div>
+						<input type='hidden' value='0' name='froniuserzeugung'>
+						<input id="froniuserzeugung" name="froniuserzeugung" value="1" type="checkbox" <?php if ( $froniuserzeugungold == 1){ echo "checked"; } ?> >
+						<label for="froniuserzeugung"> Meter mit ID 1 statt 0</label><br />
 						<input type='hidden' value='0' name='froniusprimo'>
 						<input id="froniusprimo" name="froniusprimo" value="1" type="checkbox" <?php if ( $froniusprimoold == 1){ echo "checked"; } ?> >
-						<label for="froniusprimo">Kompatibilitätsmodus für die Primo Reihe</label>
+						<label for="froniusprimo"> Kompatibilitätsmodus für die Primo Reihe</label>
 					</div>
 					<div id="wattbezugjson">
 						<div class="row" style="background-color:#febebe">
@@ -3956,7 +4162,7 @@
 					</div>
 					<div id="wattbezugsbs25">
 						<div class="row" style="background-color:#febebe">
-							Die IP des Speichers wird im dazugehörigen SMA SBS 2.5 Speicher-Modul eingestellt.
+							Die IP des Speichers wird im dazugehörigen SMA SBS Speicher-Modul eingestellt.
 						</div>
 					</div>
 
@@ -4188,7 +4394,7 @@
 							<option <?php if($pvwattmodulold == "wr_lgessv1\n") echo "selected" ?> value="wr_lgessv1">LG ESS 1.0VI</option>
 							<option <?php if($pvwattmodulold == "wr_mqtt\n") echo "selected" ?> value="wr_mqtt">MQTT</option>
 							<option <?php if($pvwattmodulold == "wr_sunways\n") echo "selected" ?> value="wr_sunways">Sunways</option>
-							<option <?php if($pvwattmodulold == "wr_fems\n") echo "selected" ?> value="wr_fems">Fenecon FEMS</option>
+							<option <?php if($pvwattmodulold == "wr_fems\n") echo "selected" ?> value="wr_fems">openEMS / Fenecon FEMS / Kaco Hy-Control</option>
 							<option <?php if($pvwattmodulold == "wr_solarworld\n") echo "selected" ?> value="wr_solarworld">Solarworld</option>
 							<option <?php if($pvwattmodulold == "wr_siemens\n") echo "selected" ?> value="wr_siemens">Siemens Speicher</option>
 						</select>
@@ -4211,8 +4417,8 @@
 					</div>
 					<div id="pvip">
 						<div class="row" style="background-color:#febebe">
-							<b><label for="pv1_ip">IP Adresse:</label></b>
-							<input type="text" name="pv1_ip" id="pv1_ip" value="<?php echo htmlspecialchars($pv1_ipold) ?>">
+							<b><label for="pv1_ipa">IP Adresse:</label></b>
+							<input type="text" name="pv1_ipa" id="pv1_ipa" value="<?php echo htmlspecialchars($pv1_ipaold) ?>">
 						</div>
 					</div>
 
@@ -4828,21 +5034,21 @@
 							<option <?php if($speichermodulold == "speicher_mpm3pm\n") echo "selected" ?> value="speicher_mpm3pm">openWB Speicher Kit</option>
 							<option <?php if($speichermodulold == "speicher_http\n") echo "selected" ?> value="speicher_http">HTTP Abfrage</option>
 							<option <?php if($speichermodulold == "mpm3pmspeicher\n") echo "selected" ?> value="mpm3pmspeicher">MPM3PM</option>
-							<option <?php if($speichermodulold == "speicher_bydhv\n") echo "selected" ?> value="speicher_bydhv">ByD HV</option>
-							<option <?php if($speichermodulold == "speicher_fronius\n") echo "selected" ?> value="speicher_fronius">Fronius Speicher</option>
+							<option <?php if($speichermodulold == "speicher_bydhv\n") echo "selected" ?> value="speicher_bydhv">BYD HV</option>
+							<option <?php if($speichermodulold == "speicher_fronius\n") echo "selected" ?> value="speicher_fronius">Fronius Speicher (Solar Battery oder BYD HV/HVS/HVM)</option>
 							<option <?php if($speichermodulold == "speicher_e3dc\n") echo "selected" ?> value="speicher_e3dc">E3DC Speicher</option>
-							<option <?php if($speichermodulold == "speicher_sbs25\n") echo "selected" ?> value="speicher_sbs25">SMA SBS2.5 Speicher</option>
+							<option <?php if($speichermodulold == "speicher_sbs25\n") echo "selected" ?> value="speicher_sbs25">SMA Sunny Boy Storage</option>
 							<option <?php if($speichermodulold == "speicher_solaredge\n") echo "selected" ?> value="speicher_solaredge">Solaredge Speicher</option>
 							<option <?php if($speichermodulold == "speicher_powerwall\n") echo "selected" ?> value="speicher_powerwall">Tesla Powerwall</option>
 							<option <?php if($speichermodulold == "speicher_kostalplenticore\n") echo "selected" ?> value="speicher_kostalplenticore">Kostal Plenticore mit Speicher</option>
-							<option <?php if($speichermodulold == "speicher_sunnyisland\n") echo "selected" ?> value="speicher_sunnyisland">SMA Sunny Island Speicher</option>
+							<option <?php if($speichermodulold == "speicher_sunnyisland\n") echo "selected" ?> value="speicher_sunnyisland">SMA Sunny Island</option>
 							<option <?php if($speichermodulold == "speicher_sonneneco\n") echo "selected" ?> value="speicher_sonneneco">Sonnen eco</option>
 							<option <?php if($speichermodulold == "speicher_varta\n") echo "selected" ?> value="speicher_varta">Varta Element u.a.</option>
 							<option <?php if($speichermodulold == "speicher_alphaess\n") echo "selected" ?> value="speicher_alphaess">Alpha ESS</option>
 							<option <?php if($speichermodulold == "speicher_victron\n") echo "selected" ?> value="speicher_victron">Victron Speicher (GX o.ä.)</option>
 							<option <?php if($speichermodulold == "speicher_lgessv1\n") echo "selected" ?> value="speicher_lgessv1">LG ESS 1.0VI</option>
 							<option <?php if($speichermodulold == "speicher_mqtt\n") echo "selected" ?> value="speicher_mqtt">MQTT</option>
-							<option <?php if($speichermodulold == "speicher_fems\n") echo "selected" ?> value="speicher_fems">Fenecon FEMS</option>
+							<option <?php if($speichermodulold == "speicher_fems\n") echo "selected" ?> value="speicher_fems">openEMS / Fenecon FEMS / Kaco Hy-Control</option>
 							<option <?php if($speichermodulold == "speicher_siemens\n") echo "selected" ?> value="speicher_siemens">Siemens</option>
 						</select>
 					</div>
@@ -4874,20 +5080,24 @@
 					<div id="divspeichernone">
 					</div>
 					<div id="divspeicherkit">
-							<div class="row" style="background-color:#fcbe1e">
-							Keine Konfiguration erforderlich
+						<div class="row">
+							<b><label for="speicherkitversion">Version des openWB Speicher Kits:</label></b>
+							<select name="speicherkitversion" id="speicherkitversion">
+								<option <?php if($speicherkitversionold == 0) echo "selected" ?> value="0">Dreiphasig (MPM3PM)</option>
+								<option <?php if($speicherkitversionold == 1) echo "selected" ?> value="1">Einphasig (SDM120)</option>
+							</select>
 						</div>
 					</div>
 					<div id="divspeichermqtt">
 						<div class="row" style="background-color:#fcbe1e">Keine Konfiguration erforderlich</div>
 						<div class="row" style="background-color:#fcbe1e">Per MQTT zu schreiben:</div>
-						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/HouseBattery/W"</b></div>
+						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/houseBattery/W"</b></div>
 						<div class="row" style="background-color:#fcbe1e">Speicherleistung in Watt, int, positiv Ladung, negativ Entladung</div>
-						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/HouseBattery/WhImported"</b></div>
+						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/houseBattery/WhImported"</b></div>
 						<div class="row" style="background-color:#fcbe1e">Geladene Energie in Wh, float, nur positiv</div>
-						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/HouseBattery/WhExported"</b></div>
+						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/houseBattery/WhExported"</b></div>
 						<div class="row" style="background-color:#fcbe1e">Entladene Energie in Wh, float, nur positiv</div>
-						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/HouseBattery/%Soc"</b></div>
+						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/houseBattery/%Soc"</b></div>
 						<div class="row" style="background-color:#fcbe1e">Ladestand des Speichers, int, 0-100</div>
 					</div>
 					<div id="divspeichervictron">
@@ -4977,11 +5187,11 @@
 					</div>
 					<div id="divspeichersbs25">
 						<div class="row" style="background-color:#fcbe1e">
-							<b><label for="sbs25ip">SBS 2.5 IP:</label></b>
+							<b><label for="sbs25ip">SBS IP:</label></b>
 							<input type="text" name="sbs25ip" id="sbs25ip" value="<?php echo $sbs25ipold ?>">
 						</div>
 						<div class="row" style="background-color:#fcbe1e">
-							Gültige Werte: IPs. IP Adresse des SMA Sunny Boy Storage 2.5 Speichers.
+							Gültige Werte: IPs. IP Adresse des SMA Sunny Boy Storage Speichers.
 						</div>
 					</div>
 					<div id="divspeichersunnyisland">

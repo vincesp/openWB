@@ -109,7 +109,12 @@ if [[ $evsecon == "ipevse" ]]; then
 		echo 0 > /var/www/html/openWB/ramdisk/chargestat
 	fi
 fi
-
+if [[ $evsecon == "extopenwb" ]]; then
+	evseplugstatelp1=$(mosquitto_sub -C 1 -h $chargep1ip -t openWB/lp/1/boolPlugStat)
+	ladestatuslp1=$(mosquitto_sub -C 1 -h $chargep1ip -t openWB/lp/1/boolChargeStat)
+	echo $evseplugstatelp1  > /var/www/html/openWB/ramdisk/plugstat
+	echo $ladestatuslp1 > /var/www/html/openWB/ramdisk/chargestat
+fi
 if [[ $lastmanagement == "1" ]]; then
 	if [[ $evsecons1 == "modbusevse" ]]; then
 		evseplugstatelp2=$(sudo python runs/readmodbus.py $evsesources1 $evseids1 1002 1)
@@ -138,6 +143,12 @@ if [[ $lastmanagement == "1" ]]; then
 			fi
 
 		fi
+	fi
+	if [[ $evsecons1 == "extopenwb" ]]; then
+		evseplugstatelp2=$(mosquitto_sub -C 1 -h $chargep2ip -t openWB/lp/1/boolPlugStat)
+		ladestatuslp2=$(mosquitto_sub -C 1 -h $chargep2ip -t openWB/lp/1/boolChargeStat)
+		echo $evseplugstatelp2  > /var/www/html/openWB/ramdisk/plugstats1
+		echo $ladestatuslp2 > /var/www/html/openWB/ramdisk/chargestats1
 	fi
 	if [[ $evsecons1 == "slaveeth" ]]; then
 		evseplugstatelp2=$(sudo python runs/readslave.py 1002 1)
@@ -192,6 +203,13 @@ if [[ $lastmanagements2 == "1" ]]; then
 			echo 0 > /var/www/html/openWB/ramdisk/chargestatlp3
 		fi
 	fi
+	if [[ $evsecons2 == "extopenwb" ]]; then
+		evseplugstatelp3=$(mosquitto_sub -C 1 -h $chargep3ip -t openWB/lp/1/boolPlugStat)
+		ladestatuslp3=$(mosquitto_sub -C 1 -h $chargep3ip -t openWB/lp/1/boolChargeStat)
+		echo $evseplugstatelp3  > /var/www/html/openWB/ramdisk/plugstats2
+		echo $ladestatuslp3 > /var/www/html/openWB/ramdisk/chargestats2
+	fi
+
 	if [[ $evsecons2 == "modbusevse" ]]; then
 	        evseplugstatelp3=$(sudo python runs/readmodbus.py $evsesources2 $evseids2 1002 1)
 	        ladestatuss2=$(</var/www/html/openWB/ramdisk/ladestatuss2)
@@ -315,6 +333,7 @@ if [[ $pvwattmodul != "none" ]]; then
 	if ! [[ $pvwatt =~ $re ]] ; then
 		pvwatt="0"
 	fi
+	pv1watt=$pvwatt
 else
 	pvwatt=$(</var/www/html/openWB/ramdisk/pvwatt)
 fi
@@ -359,6 +378,7 @@ else
 	echo 0 > /var/www/html/openWB/ramdisk/speichervorhanden
 fi
 llphaset=3
+
 #Ladeleistung ermitteln
 if [[ $ladeleistungmodul != "none" ]]; then
 	timeout 10 modules/$ladeleistungmodul/main.sh || true
@@ -408,6 +428,7 @@ else
 	llkwh=0
 	llkwhges=$llkwh
 fi
+
 #zweiter ladepunkt
 if [[ $lastmanagement == "1" ]]; then
 	if [[ $socmodul1 != "none" ]]; then
@@ -822,6 +843,9 @@ fi
 if [[ $speichermodul == "speicher_kostalplenticore" ]] && [[ $pvwattmodul == "wr_plenticore" ]]; then
 	usesimpv=1
 fi
+if [[ $speichermodul == "speicher_solaredge" ]] && [[ $pvwattmodul == "wr_solaredge" ]]; then
+	usesimpv=1
+fi
 if [[ $pvwattmodul == "wr_fronius" ]] && [[ $speichermodul == "speicher_fronius" ]]; then
 	usesimpv=1
 fi
@@ -864,7 +888,7 @@ if [[ $usesimpv == "1" ]]; then
 	fi
 	# sim bezug end
 fi
-if [[ $speichermodul == "speicher_e3dc" ]] || [[ $speichermodul == "speicher_lgessv1" ]] || [[ $speichermodul == "speicher_bydhv" ]] || [[ $speichermodul == "speicher_kostalplenticore" ]] || [[ $speichermodul == "speicher_powerwall" ]] || [[ $speichermodul == "speicher_sbs25" ]] || [[ $speichermodul == "speicher_solaredge" ]] || [[ $speichermodul == "speicher_sonneneco" ]] || [[ $speichermodul == "speicher_varta" ]] || [[ $speichermodul == "speicher_victron" ]] || [[ $speichermodul == "speicher_fronius" ]] ; then
+if [[ $speichermodul == "speicher_e3dc" ]] || [[ $speichermodul == "speicher_alphaess" ]]|| [[ $speichermodul == "speicher_lgessv1" ]] || [[ $speichermodul == "speicher_bydhv" ]] || [[ $speichermodul == "speicher_kostalplenticore" ]] || [[ $speichermodul == "speicher_powerwall" ]] || [[ $speichermodul == "speicher_sbs25" ]] || [[ $speichermodul == "speicher_solaredge" ]] || [[ $speichermodul == "speicher_sonneneco" ]] || [[ $speichermodul == "speicher_varta" ]] || [[ $speichermodul == "speicher_victron" ]] || [[ $speichermodul == "speicher_fronius" ]] ; then
 	ra='^-?[0-9]+$'
 	watt2=$(</var/www/html/openWB/ramdisk/speicherleistung)
 	if [[ -e /var/www/html/openWB/ramdisk/speicherwatt0pos ]]; then
@@ -946,7 +970,10 @@ if [[ $debug == "1" ]]; then
 	if [[ $speichermodul != "none" ]] ; then
 		echo speicherleistung $speicherleistung speichersoc $speichersoc
 	fi
-	echo pvwatt $pvwatt ladeleistung "$ladeleistung" llalt "$llalt" nachtladen "$nachtladen" nachtladen "$nachtladens1" minimalA "$minimalstromstaerke" maximalA "$maximalstromstaerke"
+	if (( $awattaraktiv == 1 )) ; then
+		echo awattarprice "$awattarprice" awattarmaxprice "$awattarmaxprice"
+	fi
+	echo pv1watt $pv1watt pv2watt $pv2watt pvwatt $pvwatt ladeleistung "$ladeleistung" llalt "$llalt" nachtladen "$nachtladen" nachtladen "$nachtladens1" minimalA "$minimalstromstaerke" maximalA "$maximalstromstaerke"
 	echo lla1 "$lla1" llv1 "$llv1" llas11 "$llas11" llas21 "$llas21" mindestuberschuss "$mindestuberschuss" abschaltuberschuss "$abschaltuberschuss" lademodus "$lademodus"
 	echo lla2 "$lla2" llas12 "$llas12" llas22 "$llas22" sofortll "$sofortll" wattbezug "$wattbezug" uberschuss "$uberschuss"
 	echo lla3 "$lla3" llas13 "$llas13" llas23 "$llas23" soclp1 $soc soclp2 $soc1
@@ -1095,6 +1122,12 @@ oversion=$(<ramdisk/mqttversion)
 if [[ $oversion != $version ]]; then
 	tempPubList="${tempPubList}\nopenWB/system/Version=${version}"
 	echo -n "$version" > ramdisk/mqttversion
+fi
+
+ocp1config=$(<ramdisk/mqttCp1Configured)
+if [[ "$ocp1config" != "1" ]]; then
+	tempPubList="${tempPubList}\nopenWB/lp/1/boolChargePointConfigured=1"
+	echo 1 > ramdisk/mqttCp1Configured
 fi
 
 olastmanagement=$(<ramdisk/mqttlastmanagement)
@@ -1398,6 +1431,13 @@ if [[ "$orfidlast" != "$arfidlast" ]]; then
 	echo $arfidlast > ramdisk/mqttrfidlasttag
 fi
 
+ouiplast=$(<ramdisk/mqttupdateinprogress)
+auiplast=$(<ramdisk/updateinprogress)
+if [[ "$ouiplast" != "$auiplast" ]]; then
+	tempPubList="${tempPubList}\nopenWB/system/updateInProgress=${auiplast}"
+	echo $arfidlast > ramdisk/mqttupdateinprogress
+fi
+
 declare -A mqttconfvar
 mqttconfvar["config/get/pv/minFeedinPowerBeforeStart"]=mindestuberschuss
 mqttconfvar["config/get/pv/maxPowerConsumptionBeforeStop"]=abschaltuberschuss
@@ -1423,6 +1463,12 @@ mqttconfvar["config/get/pv/nurpv70dynact"]=nurpv70dynact
 mqttconfvar["config/get/pv/nurpv70dynw"]=nurpv70dynw
 mqttconfvar["config/get/global/maxEVSECurrentAllowed"]=maximalstromstaerke
 mqttconfvar["config/get/global/minEVSECurrentAllowed"]=minimalstromstaerke
+mqttconfvar["config/get/u1p3p/sofortPhases"]=u1p3psofort
+mqttconfvar["config/get/u1p3p/standbyPhases"]=u1p3pstandby
+mqttconfvar["config/get/u1p3p/nurpvPhases"]=u1p3pnurpv
+mqttconfvar["config/get/u1p3p/minundpvPhases"]=u1p3pminundpv
+mqttconfvar["config/get/u1p3p/nachtPhases"]=u1p3pnl
+mqttconfvar["config/get/u1p3p/isConfigured"]=u1p3paktiv
 mqttconfvar["config/get/sofort/lp/1/energyToCharge"]=lademkwh
 mqttconfvar["config/get/sofort/lp/2/energyToCharge"]=lademkwhs1
 mqttconfvar["config/get/sofort/lp/3/energyToCharge"]=lademkwhs2
